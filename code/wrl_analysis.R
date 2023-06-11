@@ -15,3 +15,14 @@ wrl |>
   xlab("")+
   ylab("")+
   theme(legend.position = "none")
+
+wrl |>
+  group_by(`기관명`, `저자명`) |>
+  count() |> 
+  arrange(desc(n)) |> 
+  head(20) |>
+  ggplot(aes(x = n, y = reorder(저자명,n), fill = 기관명)) + 
+  geom_col()+
+  xlab("")+
+  ylab("")+
+  theme(legend.position = "none")

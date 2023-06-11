@@ -18,3 +18,20 @@ waset |>
   theme(legend.position = "none")
 
 
+waset |> 
+  group_by(`Institution`, `저자`) |> 
+  count() |> 
+  arrange(desc(n)) |> 
+  head(20) |> 
+  ggplot(aes(x = n, y = reorder (`저자`, n), fill = `Institution`)) +
+  geom_col() +
+  xlab("")+
+  ylab("")+
+  theme(legend.position = "none")
+
+waset |> 
+  filter(`중복` == 0) |> 
+  group_by(`저자`) |> 
+  count() |> 
+  arrange(desc(n)) |> 
+  filter(n >= 4)
