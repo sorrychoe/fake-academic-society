@@ -5,9 +5,9 @@
 하단의 링크를 통해 확인할 수 있습니다.
 
 ---
-보고서 링크 : https://sorrychoe.quarto.pub/fake-academic-society/
+보고서 링크 : [fake-academaic-society](https://sorrychoe.quarto.pub/fake-academic-society)
 
 
 ## Authors
 
-[@sorrychoe](https://www.github.com/sorrychoe)
+- [@sorrychoe](https://www.github.com/sorrychoe)
