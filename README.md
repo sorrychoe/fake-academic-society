@@ -10,4 +10,4 @@
 
 ## Authors
 
-- [@sorrychoe](https://www.github.com/sorrychoe)
+[@sorrychoe](https://www.github.com/sorrychoe)
