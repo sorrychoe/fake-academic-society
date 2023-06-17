@@ -2,11 +2,15 @@ library(tidyverse)
 library(readxl)
 library(tidytext)
 
-omics <- read_excel("data/omics_20190314.xlsx", sheet = "data")
+wrl <- read_excel("data/World Research Library_20180921.xlsx", sheet = "data")
 
-summary(omics)
+data("stop_words")
 
-omics |>
+summary(wrl)
+
+##가장 많이 논문을 투고한 기관====
+
+wrl |>
   group_by(`기관명`) |>
   count() |> 
   arrange(desc(n)) |> 
@@ -17,19 +21,9 @@ omics |>
   ylab("")+
   theme(legend.position = "none")
 
-omics |>
-  group_by(`기관명`, `저자명`) |>
-  count() |> 
-  arrange(desc(n)) |> 
-  head(10) |>
-  ggplot(aes(x = n, y = reorder(저자명,n), fill = 기관명)) + 
-  geom_col()+
-  xlab("")+
-  ylab("")+
-  theme(legend.position = "none")
+##가장 많이 논문을 투고한 연구자====
 
-##====
-omics |> 
+wrl |> 
   select(`논문명`, `기관명`, `저자명`) |> 
   unnest_tokens(authors, `저자명`,token = "regex", pattern = ",") -> name.saparate
 
@@ -49,14 +43,10 @@ name.saparate |>
   theme(legend.title = element_text(size = 8, face = "bold")) +
   theme(legend.text = element_text(size = 6, face = "italic"))
 
+##논문 제목에 가장 많이 사용된 단어====
 
-##====
-
-tokens <- tibble(text=omics$논문명) |> 
+tokens <- tibble(text=wrl$논문명) |> 
   unnest_tokens(word,text) 
-
-
-data("stop_words")
 
 text <- tokens %>%
   anti_join(stop_words)

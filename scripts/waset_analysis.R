@@ -1,12 +1,28 @@
+#' ---
+#' title: "waset 학회 분석"
+#' author: "sorrychoe"
+#' format: 
+#'    html: 
+#'    smooth-scroll: true
+#'editor: visual
+#'execute: 
+#'  echo: true
+#'  eval: true
+#'  message: false
+#' ---
+
 library(tidyverse)
 library(readr)
 library(tidytext)
 library(wordcloud2)
 
+data("stop_words")
+
 waset <- read_csv("data/waset.csv")
 
 summary(waset)
 
+##가장 많이 논문을 투고한 기관====
 waset |>
   group_by(Institution) |>
   count() |>
@@ -18,7 +34,7 @@ waset |>
   ylab("")+
   theme(legend.position = "none")
 
-###=====
+##가장 많이 논문을 투고한 연구자====
 waset |> 
   select(Title, Institution, `저자`) |> 
   unnest_tokens(authors, `저자`,token = "regex", pattern = ",") -> name.saparate
@@ -40,12 +56,9 @@ name.saparate |>
   theme(legend.title = element_text(size = 8, face = "bold")) +
   theme(legend.text = element_text(size = 6, face = "italic"))
 
-###=====
-
+##논문 제목에 가장 많이 사용된 단어====
 tokens <- tibble(text=waset$Title) |> 
   unnest_tokens(word,text) 
-
-data("stop_words")
 
 text <- tokens %>%
   anti_join(stop_words)

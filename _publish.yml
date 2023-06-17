@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 199fadd6-9d51-4ebd-86ec-83afc9fb2e07
+      url: 'https://sorrychoe.quarto.pub/fake-academic-society'

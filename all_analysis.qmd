@@ -1,12 +1,28 @@
+---
+title: "전체 학회 분석"
+author: "sorrychoe"
+format: 
+  html: 
+    smooth-scroll: true
+editor: visual
+---
+```{r setup, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(readxl)
 library(readr)
 library(tidytext)
+library(wordcloud2)
 
-omics <- read_excel("./data/omics_20190314.xlsx", sheet = "data")
-wrl <- read_excel("./data/World Research Library_20180921.xlsx", sheet = "data")
-waset <- read_csv("./data/waset.csv")
+data(stop_words)
 
+omics <- read_excel("data/omics_20190314.xlsx", sheet = "data")
+wrl <- read_excel("data/World Research Library_20180921.xlsx", sheet = "data")
+waset <- read_csv("data/waset.csv")
+```
+
+
+## 데이터 전처리
+```{r}
 waset.data <- waset |> 
   select(Institution, Title, `저자`) |>
   unnest_tokens(authors, `저자`,token = "regex", pattern = ",")
@@ -30,9 +46,19 @@ wrl.data$authors <- gsub('\'', "", wrl.data$authors)
 
 colnames(omics.data) <- c("Institution", "Title", "authors")
 colnames(wrl.data) <- c("Institution", "Title", "authors")
+```
 
+## 가짜학회 전체 분석
+
+waset의 경우, 기고된 논문의 수가 다른 학회보다 훨씬 많아, 기관 분석과 연구자 분석에선 배제하였습니다.
+
+다만, 단어 빈도 분석에는 포함하였습니다. 
+```{r, message=FALSE}
 rbind(wrl.data, omics.data) -> data
+rbind(data, waset.data) -> all.data
+```
 
+```{r}
 data |> 
   group_by(Institution, authors) |> 
   tally() |> 
@@ -46,7 +72,22 @@ data |>
   theme(legend.position = "top") +
   theme(legend.title = element_text(size = 8, face = "bold")) +
   theme(legend.text = element_text(size = 6, face = "italic"))
+```
 
+```{r}
+data |>
+  group_by(Institution) |>
+  count() |> 
+  arrange(desc(n)) |> 
+  head(20) |>
+  ggplot(aes(x = n, y = reorder(Institution, n), fill = Institution)) + 
+  geom_col()+
+  xlab("")+
+  ylab("")+
+  theme(legend.position = "none")
+```
+
+```{r, eval=FALSE}
 waset.data |> 
   group_by(Institution, authors) |> 
   tally() |> 
@@ -60,3 +101,19 @@ waset.data |>
   theme(legend.position = "top") +
   theme(legend.title = element_text(size = 8, face = "bold")) +
   theme(legend.text = element_text(size = 6, face = "italic"))
+```
+
+```{r, message=FALSE}
+tokens <- tibble(text=all.data$Title) |> 
+  unnest_tokens(word,text) 
+
+text <- tokens %>%
+  anti_join(stop_words)
+
+words <- text |> 
+  group_by(word) |> 
+  tally() |> 
+  arrange(desc(n))
+
+wordcloud2(words)
+```

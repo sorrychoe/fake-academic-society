@@ -1,0 +1,30 @@
+project:
+  type: "book"
+
+execute:
+  freeze: auto
+
+book:
+  title: "fake-academic-society"
+  author: "Jaeseong Choe"
+  date: 2023/06/18
+  downloads: [pdf]
+  repo-url: https://github.com/sorrychoe/fake-academic-society
+  repo-actions: edit
+  search: true
+  reader-mode: true
+  sidebar:
+    style: "docked"
+  chapters:
+    - index.qmd
+    - part: "analysis per society"
+      chapters:
+        - wrl_analysis.qmd
+        - omics_analysis.qmd
+        - waset_analysis.qmd
+    - part: "all society"
+      chapters: 
+        - all_analysis.qmd
+
+format:
+  bookup-html
