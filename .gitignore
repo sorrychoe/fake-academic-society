@@ -159,9 +159,15 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-# library
-*.py
-
-# Font
-*.ttf
+# Rproject file
 .Rproj.user
+
+# Quarto
+*_files/
+/.luarc.json
+_freeze/
+_book/
+_extensions/
+_site
+.quarto/
+

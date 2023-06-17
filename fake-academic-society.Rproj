@@ -16,4 +16,9 @@ LineEndingConversion: Windows
 
 UseNativePipeOperator: Yes
 
+MarkdownWrap: Column
+MarkdownWrapAtColumn: 72
+MarkdownReferences: Document
+MarkdownCanonical: Yes
+
 SpellingDictionary: en_US
