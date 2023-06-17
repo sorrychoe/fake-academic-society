@@ -1,4 +1,4 @@
-\library(tidyverse)
+library(tidyverse)
 library(readxl)
 library(readr)
 library(tidytext)
@@ -32,3 +32,31 @@ colnames(omics.data) <- c("Institution", "Title", "authors")
 colnames(wrl.data) <- c("Institution", "Title", "authors")
 
 rbind(wrl.data, omics.data) -> data
+
+data |> 
+  group_by(Institution, authors) |> 
+  tally() |> 
+  arrange(desc(n)) |> 
+  head(30) |> 
+  ggplot(aes(x=reorder(authors,n), y=n, fill=Institution)) +
+  geom_col() +
+  coord_flip() +
+  xlab("") +
+  ylab("") +
+  theme(legend.position = "top") +
+  theme(legend.title = element_text(size = 8, face = "bold")) +
+  theme(legend.text = element_text(size = 6, face = "italic"))
+
+waset.data |> 
+  group_by(Institution, authors) |> 
+  tally() |> 
+  arrange(desc(n)) |>
+  head(30) |> 
+  ggplot(aes(x=reorder(authors,n), y=n, fill=Institution)) +
+  geom_col() +
+  coord_flip() +
+  xlab("") +
+  ylab("") +
+  theme(legend.position = "top") +
+  theme(legend.title = element_text(size = 8, face = "bold")) +
+  theme(legend.text = element_text(size = 6, face = "italic"))
